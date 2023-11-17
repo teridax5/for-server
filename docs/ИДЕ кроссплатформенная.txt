@@ -1,5 +1,0 @@
-Если питон:
-- gui: pyqt5/tkinter
-- build: buldozer
-- ref to interpreter
-- syntax help
