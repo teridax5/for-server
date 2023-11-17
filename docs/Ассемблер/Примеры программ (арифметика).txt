@@ -1,0 +1,52 @@
+# инциализируем значения регистров
+mov  $123, %rax
+mov  $456, %rcx
+
+# инкремент: rax = rax + 1 = 124
+inc  %rax
+
+# декремент: rax = rax - 1 = 123
+dec  %rax
+
+# сложение: rax = rax + rcx = 579
+add  %rcx, %rax
+
+# вычитание: rax = rax - rcx = 123
+sub  %rcx, %rax
+
+# изменение знака: rcx = - rcx = -456
+neg  %rcx
+
+# умножение
+mov $100, %al
+mov $3, %cl
+mul %cl
+В данном примере инструкция mul умножает al на cl, и сохраняет результат умножения в пару регистров al и ah. Таким образом, ax примет значение 0x12C или 300 в десятичной нотации. В худшем случае для сохранения результата перемножения двух N-байтовых значений может потребоваться до 2*N байт. В зависимости от размера операнда результат сохраняется в al:ah, ax:dx, eax:edx или rax:rdx. Притом в качестве множителей всегда используется первый из этих регистров и переданный инструкции аргумент.
+
+mov  $123, %rax
+mov  $456, %rcx
+
+# rax = rax * rcx = 56088
+imul %rcx, %rax
+
+# rcx = rax * 10 = 560880
+imul $10, %rax, %rcx
+
+mov  $0,   %rdx
+mov  $456, %rax
+mov  $123, %rcx
+
+# rax = rdx:rax / rcx = 3
+# rdx = rdx:rax % rcx = 87
+div  %rcx
+
+mov  $0, %rax # a = false
+mov  $1, %rbx # b = true
+mov  $0, %rcx # c = false
+
+# rdx := a || !(b && c)
+mov  %rcx, %rdx  # rdx = c
+and  %rbx, %rdx  # rdx &= b
+not  %rdx        # rdx = ~ rdx
+or   %rax, %rdx  # rdx |= a
+and  $1,   %rdx  # rdx &= 1

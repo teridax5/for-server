@@ -1,0 +1,11 @@
+paas_runner - FastAPI, pydantic as validator
+s3_runner - GoLang
+service_ipsec - GoLang
+service_lbaas - GoLang
+tg_bot - откуда esu?
+toochka - GoLang
+toochka_ctl - Python
+upload_proxy - aiohttp
+veeam_runner/openstack_runner - Flask
+vsphere_runner - aiohttp
+worker - GoLang, lbaas

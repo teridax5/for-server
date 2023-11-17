@@ -1,0 +1,74 @@
+cmp %rax, %rcx - получаем флаг сравнения (ещё можно test)
+
+je - равны
+jl - знаково меньше
+jb - беззнаково меньше
+jg - знаково больше
+ja - беззнаково больше
+
+je 1f -> 1:
+
+http://stackoverflow.com/a/9617990/1565238
+Instruction	Description	Signed-ness	Conditions checked
+JO	Jump if overflow		OF = 1
+JNO	Jump if not overflow		OF = 0
+JS	Jump if sign		SF = 1
+JNS	Jump if not sign		SF = 0
+JE
+JZ	Jump if equal
+Jump if zero		ZF = 1
+JNE
+JNZ	Jump if not equal
+Jump if not zero		ZF = 0
+JP
+JPE	Jump if parity
+Jump if parity even		PF = 1
+JNP
+JPO	Jump if no parity
+Jump if parity odd		PF = 0
+JCXZ
+JECXZ
+JRCXZ	Jump if CX is zero
+Jump if ECX is zero
+Jump if RCX is zero		CX = 0
+ECX = 0
+RCX = 0
+JB
+JNAE
+JC	Jump if below
+Jump if not above or equal
+Jump if carry	unsigned	CF = 1
+JNB
+JAE
+JNC	Jump if not below
+Jump if above or equal
+Jump if not carry	unsigned	CF = 0
+JBE
+JNA	Jump if below or equal
+Jump if not above	unsigned	CF = 1 or ZF = 1
+JA
+JNBE	Jump if above
+Jump if not below or equal	unsigned	CF = 0 and ZF = 0
+JL
+JNGE	Jump if less
+Jump if not greater or equal	signed	SF <> OF
+JGE
+JNL	Jump if greater or equal
+Jump if not less	signed	SF = OF
+JLE
+JNG	Jump if less or equal
+Jump if not greater	signed	ZF = 1 or SF <> OF
+JG
+JNLE	Jump if greater
+Jump if not less or equal	signed	ZF = 0 and SF = OF
+
+cmovge %rcx, %rax - mov при выполнении условия
+setnz %al - записываем 0 или 1 при выполнении условия
+
+mov $10, %rcx
+1:
+# какой-то код
+  loop   1b
+# loopz  1b
+# loopnz 1b
+Инструкция loop уменьшает значение регистра rcx на единицу, и если после этого rcx != 0, осуществляет переход на заданную метку. Инструкции loopz и loopnz работают аналогично, только условия более сложные — (rcx != 0) && (ZF == 1) и (rcx != 0) && (ZF == 0) соответственно.
