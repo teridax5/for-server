@@ -1,21 +1,25 @@
 CC = fasm
-LIBS = asmlib/fmt.o asmlib/str.o asmlib/sys.o asmlib/mth.o
-.PHONY: default compile build once dump hex run
-default: build run
-compile: $(LIBS)
-	$(CC) asmlib/fmt.asm && $(CC) asmlib/str.asm && $(CC) asmlib/sys.asm && $(CC) asmlib/mth.asm
-build: $(fn).asm
-	$(CC) $(fn).asm
-	ld $(fn).o $(LIBS) -o $(fn)
-once: $(fn).asm
-	$(CC) $(fn).asm
-	ld $(fn).o -o $(fn)
-dump: $(fn)
-	objdump -S -M intel -d $(fn) > obj.dump
-	cat obj.dump
-hex: $(fn)
-	hexeditor $(fn)
-run: $(fn)
-	./$(fn)
+INCLUDE = asmlib
+.PHONY: build once dump hex run clear
+once: main.asm
+	@$(CC) main.asm
+	@ld main.o -o main
+dump:
+	@objdump -S -M intel -d main > obj.dump
+	@cat obj.dump
+hex:
+	@hexeditor main
+run:
+	@./main
 clear:
-	rm $(fn) $(fn).o
+	@rm main
+compile:
+	$(eval ALIBS = $(shell ls $(INCLUDE)/*.asm))
+	@for file in $(ALIBS) ; do \
+		$(CC) $$file; \
+	done
+build:
+	$(eval OBJFILES = $(shell ls $(INCLUDE)/*.o))
+	@$(CC) main.asm
+	@ld main.o $(OBJFILES) -o main
+	@rm $(OBJFILES) main.o

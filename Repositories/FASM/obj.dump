@@ -1,0 +1,202 @@
+
+main:     file format elf64-x86-64
+
+
+Disassembly of section .entry:
+
+0000000000401000 <_start>:
+  401000:	48 b8 30 20 40 00 00 	movabs rax,0x402030
+  401007:	00 00 00 
+  40100a:	48 c7 c3 00 08 00 00 	mov    rbx,0x800
+  401011:	e8 12 01 00 00       	call   401128 <read_from_stdin>
+  401016:	48 c7 c0 5f 00 00 00 	mov    rax,0x5f
+  40101d:	48 c7 c3 08 00 00 00 	mov    rbx,0x8
+  401024:	e8 1f 01 00 00       	call   401148 <print_num_sys>
+  401029:	e8 8a 01 00 00       	call   4011b8 <print_line>
+  40102e:	e8 55 01 00 00       	call   401188 <print_char>
+  401033:	e8 80 01 00 00       	call   4011b8 <print_line>
+  401038:	48 b8 08 20 40 00 00 	movabs rax,0x402008
+  40103f:	00 00 00 
+  401042:	e8 81 01 00 00       	call   4011c8 <print_string>
+  401047:	48 c7 c0 d2 04 00 00 	mov    rax,0x4d2
+  40104e:	e8 35 00 00 00       	call   401088 <int_to_string>
+  401053:	e8 70 01 00 00       	call   4011c8 <print_string>
+  401058:	e8 5b 01 00 00       	call   4011b8 <print_line>
+  40105d:	48 b8 00 20 40 00 00 	movabs rax,0x402000
+  401064:	00 00 00 
+  401067:	e8 74 00 00 00       	call   4010e0 <string_to_int>
+  40106c:	48 c7 c3 0a 00 00 00 	mov    rbx,0xa
+  401073:	e8 d0 00 00 00       	call   401148 <print_num_sys>
+  401078:	e8 3b 01 00 00       	call   4011b8 <print_line>
+  40107d:	e8 76 01 00 00       	call   4011f8 <exit>
+
+Disassembly of section .int_to_string:
+
+0000000000401088 <int_to_string>:
+  401088:	53                   	push   rbx
+  401089:	51                   	push   rcx
+  40108a:	52                   	push   rdx
+  40108b:	48 c7 c3 0a 00 00 00 	mov    rbx,0xa
+  401092:	48 31 c9             	xor    rcx,rcx
+  401095:	48 83 f8 00          	cmp    rax,0x0
+  401099:	74 10                	je     4010ab <int_to_string+0x23>
+  40109b:	48 31 d2             	xor    rdx,rdx
+  40109e:	48 f7 f3             	div    rbx
+  4010a1:	48 83 c2 30          	add    rdx,0x30
+  4010a5:	52                   	push   rdx
+  4010a6:	48 ff c1             	inc    rcx
+  4010a9:	eb ea                	jmp    401095 <int_to_string+0xd>
+  4010ab:	48 31 c0             	xor    rax,rax
+  4010ae:	48 31 d2             	xor    rdx,rdx
+  4010b1:	48 83 f9 00          	cmp    rcx,0x0
+  4010b5:	74 0f                	je     4010c6 <int_to_string+0x3e>
+  4010b7:	5a                   	pop    rdx
+  4010b8:	88 90 18 20 40 00    	mov    BYTE PTR [rax+0x402018],dl
+  4010be:	48 ff c0             	inc    rax
+  4010c1:	48 ff c9             	dec    rcx
+  4010c4:	eb eb                	jmp    4010b1 <int_to_string+0x29>
+  4010c6:	c6 80 18 20 40 00 00 	mov    BYTE PTR [rax+0x402018],0x0
+  4010cd:	5a                   	pop    rdx
+  4010ce:	59                   	pop    rcx
+  4010cf:	5b                   	pop    rbx
+  4010d0:	48 b8 18 20 40 00 00 	movabs rax,0x402018
+  4010d7:	00 00 00 
+  4010da:	c3                   	ret    
+
+Disassembly of section .string_to_int:
+
+00000000004010e0 <string_to_int>:
+  4010e0:	53                   	push   rbx
+  4010e1:	51                   	push   rcx
+  4010e2:	52                   	push   rdx
+  4010e3:	48 31 db             	xor    rbx,rbx
+  4010e6:	48 31 c9             	xor    rcx,rcx
+  4010e9:	80 3c 18 00          	cmp    BYTE PTR [rax+rbx*1],0x0
+  4010ed:	74 0d                	je     4010fc <string_to_int+0x1c>
+  4010ef:	8a 0c 18             	mov    cl,BYTE PTR [rax+rbx*1]
+  4010f2:	48 83 e9 30          	sub    rcx,0x30
+  4010f6:	51                   	push   rcx
+  4010f7:	48 ff c3             	inc    rbx
+  4010fa:	eb ed                	jmp    4010e9 <string_to_int+0x9>
+  4010fc:	48 c7 c1 01 00 00 00 	mov    rcx,0x1
+  401103:	48 31 c0             	xor    rax,rax
+  401106:	48 83 fb 00          	cmp    rbx,0x0
+  40110a:	74 11                	je     40111d <string_to_int+0x3d>
+  40110c:	5a                   	pop    rdx
+  40110d:	48 0f af d1          	imul   rdx,rcx
+  401111:	48 01 d0             	add    rax,rdx
+  401114:	48 6b c9 0a          	imul   rcx,rcx,0xa
+  401118:	48 ff cb             	dec    rbx
+  40111b:	eb e9                	jmp    401106 <string_to_int+0x26>
+  40111d:	5a                   	pop    rdx
+  40111e:	59                   	pop    rcx
+  40111f:	5b                   	pop    rbx
+  401120:	c3                   	ret    
+
+Disassembly of section .read_from_stdin:
+
+0000000000401128 <read_from_stdin>:
+  401128:	50                   	push   rax
+  401129:	53                   	push   rbx
+  40112a:	51                   	push   rcx
+  40112b:	52                   	push   rdx
+  40112c:	48 89 c1             	mov    rcx,rax
+  40112f:	48 89 da             	mov    rdx,rbx
+  401132:	48 c7 c0 03 00 00 00 	mov    rax,0x3
+  401139:	48 c7 c3 02 00 00 00 	mov    rbx,0x2
+  401140:	cd 80                	int    0x80
+  401142:	5a                   	pop    rdx
+  401143:	59                   	pop    rcx
+  401144:	5b                   	pop    rbx
+  401145:	58                   	pop    rax
+  401146:	c3                   	ret    
+
+Disassembly of section .print_num_sys:
+
+0000000000401148 <print_num_sys>:
+  401148:	50                   	push   rax
+  401149:	51                   	push   rcx
+  40114a:	52                   	push   rdx
+  40114b:	48 31 c9             	xor    rcx,rcx
+  40114e:	48 83 f8 00          	cmp    rax,0x0
+  401152:	74 1c                	je     401170 <print_num_sys+0x28>
+  401154:	48 31 d2             	xor    rdx,rdx
+  401157:	48 f7 f3             	div    rbx
+  40115a:	48 83 c2 30          	add    rdx,0x30
+  40115e:	48 83 fa 39          	cmp    rdx,0x39
+  401162:	7f 06                	jg     40116a <print_num_sys+0x22>
+  401164:	52                   	push   rdx
+  401165:	48 ff c1             	inc    rcx
+  401168:	eb e4                	jmp    40114e <print_num_sys+0x6>
+  40116a:	48 83 c2 07          	add    rdx,0x7
+  40116e:	eb f4                	jmp    401164 <print_num_sys+0x1c>
+  401170:	48 83 f9 00          	cmp    rcx,0x0
+  401174:	74 0b                	je     401181 <print_num_sys+0x39>
+  401176:	58                   	pop    rax
+  401177:	e8 0c 00 00 00       	call   401188 <print_char>
+  40117c:	48 ff c9             	dec    rcx
+  40117f:	eb ef                	jmp    401170 <print_num_sys+0x28>
+  401181:	5a                   	pop    rdx
+  401182:	59                   	pop    rcx
+  401183:	58                   	pop    rax
+  401184:	c3                   	ret    
+
+Disassembly of section .print_char:
+
+0000000000401188 <print_char>:
+  401188:	50                   	push   rax
+  401189:	53                   	push   rbx
+  40118a:	51                   	push   rcx
+  40118b:	52                   	push   rdx
+  40118c:	88 05 9e 16 00 00    	mov    BYTE PTR [rip+0x169e],al        # 402830 <buffer+0x800>
+  401192:	48 c7 c0 04 00 00 00 	mov    rax,0x4
+  401199:	48 c7 c3 01 00 00 00 	mov    rbx,0x1
+  4011a0:	48 b9 30 28 40 00 00 	movabs rcx,0x402830
+  4011a7:	00 00 00 
+  4011aa:	48 c7 c2 01 00 00 00 	mov    rdx,0x1
+  4011b1:	cd 80                	int    0x80
+  4011b3:	5a                   	pop    rdx
+  4011b4:	59                   	pop    rcx
+  4011b5:	5b                   	pop    rbx
+  4011b6:	58                   	pop    rax
+  4011b7:	c3                   	ret    
+
+Disassembly of section .print_line:
+
+00000000004011b8 <print_line>:
+  4011b8:	50                   	push   rax
+  4011b9:	48 c7 c0 0a 00 00 00 	mov    rax,0xa
+  4011c0:	e8 c3 ff ff ff       	call   401188 <print_char>
+  4011c5:	58                   	pop    rax
+  4011c6:	c3                   	ret    
+
+Disassembly of section .print_string:
+
+00000000004011c8 <print_string>:
+  4011c8:	50                   	push   rax
+  4011c9:	53                   	push   rbx
+  4011ca:	48 31 db             	xor    rbx,rbx
+  4011cd:	80 3c 18 00          	cmp    BYTE PTR [rax+rbx*1],0x0
+  4011d1:	74 05                	je     4011d8 <print_string+0x10>
+  4011d3:	48 ff c3             	inc    rbx
+  4011d6:	eb f5                	jmp    4011cd <print_string+0x5>
+  4011d8:	51                   	push   rcx
+  4011d9:	52                   	push   rdx
+  4011da:	48 89 c1             	mov    rcx,rax
+  4011dd:	48 c7 c0 04 00 00 00 	mov    rax,0x4
+  4011e4:	48 89 da             	mov    rdx,rbx
+  4011e7:	48 c7 c3 01 00 00 00 	mov    rbx,0x1
+  4011ee:	cd 80                	int    0x80
+  4011f0:	5a                   	pop    rdx
+  4011f1:	59                   	pop    rcx
+  4011f2:	5b                   	pop    rbx
+  4011f3:	58                   	pop    rax
+  4011f4:	c3                   	ret    
+
+Disassembly of section .exit:
+
+00000000004011f8 <exit>:
+  4011f8:	48 31 c0             	xor    rax,rax
+  4011fb:	48 ff c0             	inc    rax
+  4011fe:	48 31 db             	xor    rbx,rbx
+  401201:	cd 80                	int    0x80
