@@ -8,7 +8,6 @@ void Game::new_game() {
 
     // create rectangle, resize it and add to the scene
     player = new Player();
-    player->setPolygon(player->getPolygon());
     scene->addItem(player);
 
     // make focus flag on rectangle
@@ -22,7 +21,14 @@ void Game::new_game() {
     view->show();
     view->setFixedSize(800, 600);
     scene->setSceneRect(0, 0, 800, 600);
+    scene->setBackgroundBrush(QImage(":/images/background.png"));
     player->setPos((view->width()-player->sizeX())/2, view->height() - player->sizeY());
+
+    score_rect = new QGraphicsRectItem();
+    score_rect->setPos(0, 0);
+    score_rect->setBrush(Qt::white);
+    score_rect->setRect(0, 0, 200, 100);
+    scene->addItem(score_rect);
 
     score = new Score();
     scene->addItem(score);
@@ -48,6 +54,7 @@ void Game::game_over() {
     }
     delete score;
     delete health;
+    delete score_rect;
     timer->stop();
     msgBox = new QMessageBox();
     msgBox->setText("Continue?");
@@ -76,7 +83,7 @@ void Game::addBullet()
     if (this->getHealth()->getHealth() > 0) {
         Bullet * new_bullet = new Bullet();
         bullets.append(new_bullet);
-        new_bullet->setPos(player->x(), player->y());
+        new_bullet->setPos(player->x()+(player->sizeX()-new_bullet->pixmap().width())/2, player->y());
         scene->addItem(new_bullet);
     }
 }

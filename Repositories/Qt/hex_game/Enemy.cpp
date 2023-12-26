@@ -12,7 +12,7 @@ Enemy::Enemy()
 {
     int random_number = rand() % 700;
     setPos(random_number, 0);
-    setRect(0, 0, 100, 100);
+    setPixmap(QPixmap(":/images/enemy.png"));
     timer = new QTimer();
     connect(timer, SIGNAL(timeout()), this, SLOT(move()));
 

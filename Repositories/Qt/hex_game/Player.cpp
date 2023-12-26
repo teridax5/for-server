@@ -24,6 +24,12 @@ void Player::keyPressEvent(QKeyEvent *event)
         break;
     case Qt::Key_Space:
         game->addBullet();
+        if (bulletsound->state() == QMediaPlayer::PlayingState) {
+            bulletsound->setPosition(0);
+        }
+        else if (bulletsound->state() == QMediaPlayer::StoppedState) {
+            bulletsound->play();
+        }
         //qDebug() << "Bullet was created!";
         break;
     /*default:
@@ -33,27 +39,19 @@ void Player::keyPressEvent(QKeyEvent *event)
     //qDebug() << key_info << "button was pressed!";
 }
 
-void Player::loadPolygon()
-{
-    for (QPointF p : points) {
-        p.setX(p.x()*scale);
-        p.setY(p.y()*scale);
-        polygon << p;
-    }
-}
-
-QPolygonF Player::getPolygon()
-{
-    this->loadPolygon();
-    return polygon;
-}
-
 double Player::sizeX()
 {
-    return points[3].x() * scale;
+    return this->pixmap().width();
 }
 
 double Player::sizeY()
 {
-    return points[2].y() * scale;
+    return this->pixmap().height();
+}
+
+Player::Player()
+{
+    setPixmap(QPixmap(":/images/player.png"));
+    bulletsound = new QMediaPlayer();
+    bulletsound->setMedia(QUrl("qrc:/sounds/beam.wav"));
 }

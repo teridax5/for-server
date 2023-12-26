@@ -26,6 +26,7 @@ class Game : public QObject
     QMessageBox * msgBox;
 public:
     void new_game();
+    QGraphicsRectItem  * score_rect;
     Score * getScore();
     Health * getHealth();
     QList<Enemy *> getEnemies();
